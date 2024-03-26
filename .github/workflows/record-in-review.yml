@@ -16,6 +16,7 @@ jobs:
           id: get_linked_issues
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PR_ID: ${{ github.event.pull_request.node_id }}
           run: |
             echo "GH_TOKEN:"
             echo "$GH_TOKEN"
@@ -43,5 +44,5 @@ jobs:
               }' -f pr=$PR_ID --jq '.data.node.closingIssuesReferences.nodes[0].projectItems.nodes[0].id')"
             echo "ISSUE IDs:"
             echo "$linked_issues"
-            echo "LINKED_ISSUE_ID=$linked_issue_id" >> $GITHUB_ENV
+            echo "LINKED_ISSUE_ID=$linked_issues" >> $GITHUB_ENV
         
