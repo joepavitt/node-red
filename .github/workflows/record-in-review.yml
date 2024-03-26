@@ -17,6 +17,8 @@ jobs:
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
+            echo "GH_TOKEN:"
+            echo "$GH_TOKEN"
             linked_issues="$( gh api graphql -f query='
               query($pr:ID!) {
                 node(id: $pr) {
