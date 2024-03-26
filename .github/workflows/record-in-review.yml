@@ -31,17 +31,12 @@ jobs:
                     closingIssuesReferences(first:5, userLinkedOnly:false) {
                       totalCount
                       nodes { 
-                        id 
-                        projectItems(first: 5) {
-                          nodes {
-                            id
-                          }
-                        }
+                        id
                       }
                     }
                   }
                 }
-              }' -f pr=$PR_ID --jq '.data.node.closingIssuesReferences.nodes[0].projectItems.nodes[0].id')"
+              }' -f pr=$PR_ID --jq '.data.node.closingIssuesReferences.nodes')"
             echo "ISSUE IDs:"
             echo "$linked_issues"
             echo "LINKED_ISSUE_ID=$linked_issues" >> $GITHUB_ENV
