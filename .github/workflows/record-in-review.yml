@@ -19,8 +19,12 @@ jobs:
           run: |
             echo "GH_TOKEN:"
             echo "$GH_TOKEN"
+            echo "PR_ID:"
+            echo "$PR_ID"
             linked_issues="$( gh api graphql -f query='
-              query($pr:ID!) {
+              query(
+                $pr: ID!
+              ) {
                 node(id: $pr) {
                   ... on PullRequest {
                     closingIssuesReferences(first:5, userLinkedOnly:false) {
@@ -39,7 +43,5 @@ jobs:
               }' -f pr=$PR_ID --jq '.data.node.closingIssuesReferences.nodes[0].projectItems.nodes[0].id')"
             echo "ISSUE IDs:"
             echo "$linked_issues"
-            echo "PR_ID:"
-            echo "${{env.PR_ID}}"
             echo "LINKED_ISSUE_ID=$linked_issue_id" >> $GITHUB_ENV
         
