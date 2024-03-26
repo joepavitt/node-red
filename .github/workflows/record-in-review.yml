@@ -15,7 +15,7 @@ jobs:
         - name: Get Linked Issues
           id: get_linked_issues
           env:
-            GH_TOKEN: ${{ secrets.PROJECT_ACCESS_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
             linked_issues="$( gh api graphql -f query='
               query($pr:ID!) {
