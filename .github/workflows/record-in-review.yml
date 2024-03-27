@@ -12,8 +12,6 @@ jobs:
       name: "Update Issue: Under Review"
       runs-on: ubuntu-latest
       steps:
-        - name: Get Today's Date
-          run: echo "DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
         - name: Get Linked Issues
           id: get_linked_issues
           env:
@@ -56,15 +54,15 @@ jobs:
             UNDER_REVIEW_OPTION_ID: 5fce39d2
             INTO_REVIEW_FIELD_ID: PVTF_lAHOBepif84AfH1xzgUnkt0
           run: |
-            item_ids=$(echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[] | select(.project.id == "${{ env.PROJECT_ID }}") | .id')          
+            item_ids=$(echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[] | select(.project.id == "${{ env.PROJECT_ID }}") | .id')
+            echo "DATE=$(date +"%Y-%m-%d")"         
             while read -r ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
               mutation(
                 $itemId:ID!,
                 $projectId:ID!,
-                $date_field: ID!
-                $date_value: Date!
+                $date: Date!
               ) {
                 markUnderReview: updateProjectV2ItemFieldValue(
                   input: {
@@ -87,7 +85,7 @@ jobs:
                     fieldId: "${{ env.INTO_REVIEW_FIELD_ID }}",
                     itemId: $itemId,
                     value: {
-                      text: $DATE
+                      text: $date
                     }
                   }
                 ) {
@@ -96,6 +94,6 @@ jobs:
                     updatedAt
                   }
                 }
-              }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
+              }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID -f date=$DATE  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
               echo "Issues Updated @ $updatedAt"
             done <<< "$item_ids"
