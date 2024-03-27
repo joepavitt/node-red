@@ -61,9 +61,9 @@ jobs:
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
               mutation(
-                $itemId:ID!,
-                $projectId:ID!,
-                $date: Date!
+                $itemId: ID!,
+                $projectId: ID!,
+                $date: String!
               ) {
                 markUnderReview: updateProjectV2ItemFieldValue(
                   input: {
