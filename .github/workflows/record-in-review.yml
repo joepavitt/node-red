@@ -56,17 +56,19 @@ jobs:
             STATUS_FIELD_ID: PVTSSF_lAHOBepif84AfH1xzgUjmnw
             UNDER_REVIEW_OPTION_ID: 5fce39d2
           run: |
-            project_items = echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[]'
-            item_ids = echo $project_items | jq '.[] | .projectItems.nodes[] | select(.project.id == "$PROJECT_ID") | .id'   
+            project_items="'${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[]'"
+            echo $project_items
+            item_ids="$project_items | jq '.[] | .projectItems.nodes[] | select(.project.id == "$PROJECT_ID") | .id'"
+            echo $item_ids            
             echo $item_ids | while read ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
-              mutation($issueId:ID!, $projectId:ID!) {
+              mutation($itemId:ID!, $projectId:ID!) {
                 updateProjectV2ItemFieldValue(
                   input: {
                     projectId: $projectId,
                     fieldId: "${{ env.STATUS_FIELD_ID }}",
-                    itemId: $issueId,
+                    itemId: $itemId,
                     value: {
                       singleSelectOptionId: "${{ env.UNDER_REVIEW_OPTION_ID }}"
                     }
@@ -77,6 +79,6 @@ jobs:
                     updatedAt
                   }
                 }
-              }' -f issueId=$ISSUE_ID -f projectId=$PROJECT_ID  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
+              }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
               echo "updatedAt=$updatedAt"
             done
