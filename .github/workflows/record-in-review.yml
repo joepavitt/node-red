@@ -18,7 +18,7 @@ jobs:
         - name: Get registration token
           id: getRegToken
           run: |
-            curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/joepavitt/node-red/actions/runners/registration-token
+            curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.PROJECT_ACCESS_TOKEN }}' https://api.github.com/repos/joepavitt/node-red/actions/runners/registration-token
     mark_under_review:
       if: ${{ !github.event.pull_request.draft }}
       permissions: write-all
@@ -28,7 +28,7 @@ jobs:
         - name: Get Linked Issues
           id: get_linked_issues
           env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.PROJECT_ACCESS_TOKEN }}
             PR_ID: ${{ github.event.pull_request.node_id }}
           run: |
             echo "GH_TOKEN:"
@@ -58,7 +58,7 @@ jobs:
           
         - name: Update Status to "Under Review"
           env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.PROJECT_ACCESS_TOKEN }}
             PROJECT_ID: PVT_kwHOBepif84AfH1x
             STATUS_FIELD_ID: PVTSSF_lAHOBepif84AfH1xzgUjmnw
             UNDER_REVIEW_OPTION_ID: 5fce39d2
