@@ -56,10 +56,13 @@ jobs:
             STATUS_FIELD_ID: PVTSSF_lAHOBepif84AfH1xzgUjmnw
             UNDER_REVIEW_OPTION_ID: 5fce39d2
           run: |
-            project_items="'${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[]'"
+            project_items=$(echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[]')
+            echo project_items          
             echo $project_items
-            item_ids="$project_items | jq '.[] | .projectItems.nodes[] | select(.project.id == "$PROJECT_ID") | .id'"
+            item_ids=$(echo $project_items | jq '.[] | .projectItems.nodes[] | select(.project.id == "$PROJECT_ID") | .id')
+            echo item_ids:            
             echo $item_ids            
+            echo while loop:            
             echo $item_ids | while read ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
