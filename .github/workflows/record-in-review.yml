@@ -61,7 +61,6 @@ jobs:
             echo "ISSUE IDs:"
             echo "$linked_issues"
             echo "LINKED_ISSUE_IDs=$linked_issues" >> $GITHUB_ENV
-          
         - name: Update Status to "Under Review"
           env:
             GH_TOKEN: ${{ secrets.PROJECT_ACCESS_TOKEN }}
