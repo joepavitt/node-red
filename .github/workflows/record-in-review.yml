@@ -55,15 +55,13 @@ jobs:
             INTO_REVIEW_FIELD_ID: PVTF_lAHOBepif84AfH1xzgUnkt0
           run: |
             item_ids=$(echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[] | select(.project.id == "${{ env.PROJECT_ID }}") | .id')
-            DATE=$(date +"%Y-%m-%d")
-            echo "Date: $DATE"
             while read -r ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
               mutation(
                 $itemId: ID!,
                 $projectId: ID!,
-                $date: String!
+                $date: Date!
               ) {
                 markUnderReview: updateProjectV2ItemFieldValue(
                   input: {
@@ -95,6 +93,6 @@ jobs:
                     updatedAt
                   }
                 }
-              }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID -f date=$DATE  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
+              }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID -f date=date  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
               echo "Issues Updated @ $updatedAt"
             done <<< "$item_ids"
