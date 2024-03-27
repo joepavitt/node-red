@@ -60,7 +60,7 @@ jobs:
             echo item_ids:            
             echo $item_ids            
             echo while loop:            
-            echo while read ISSUE_ITEM_ID; do
+            echo while read -r ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
               mutation($itemId:ID!, $projectId:ID!) {
