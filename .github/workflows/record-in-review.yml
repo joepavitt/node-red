@@ -9,7 +9,6 @@ on:
 jobs:
     mark_under_review:
       if: ${{ !github.event.pull_request.draft }}
-      permissions: write-all
       name: "Update Issue: Under Review"
       runs-on: ubuntu-latest
       steps:
