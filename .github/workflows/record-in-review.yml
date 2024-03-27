@@ -44,7 +44,7 @@ jobs:
             echo "LINKED_ISSUE_IDs=$linked_issues" >> $GITHUB_ENV
         - name: Loop
           run: |
-            echo ${{ env.LINKED_ISSUE_IDs }} | jq -r '.[] | .id' | while read ISSUE_ID; do
+            echo '${{ env.LINKED_ISSUE_IDs }}' | jq -r '.[] | .id' | while read ISSUE_ID; do
               echo "ISSUE_ID=$ISSUE_ID"
             done
         # - name: Update Status to "Under Review"
