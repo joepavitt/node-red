@@ -86,7 +86,7 @@ jobs:
                     fieldId: "${{ env.INTO_REVIEW_FIELD_ID }}",
                     itemId: $itemId,
                     value: {
-                      text: $date
+                      date: $date
                     }
                   }
                 ) {
