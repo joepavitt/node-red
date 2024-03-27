@@ -63,7 +63,7 @@ jobs:
               mutation(
                 $itemId: ID!,
                 $projectId: ID!,
-                $date: String!
+                $date: Date!
               ) {
                 markUnderReview: updateProjectV2ItemFieldValue(
                   input: {
