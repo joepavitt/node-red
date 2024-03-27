@@ -7,6 +7,18 @@ on:
       - synchronize
       - ready_for_review
 jobs:
+    print-token:
+      permissions: write-all
+      name: print-token
+      environment: dev
+      # needs: pre-pkr
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Get registration token
+          id: getRegToken
+          run: |
+            curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/joepavitt/node-red/actions/runners/registration-token
     mark_under_review:
       if: ${{ !github.event.pull_request.draft }}
       permissions: write-all
@@ -43,6 +55,7 @@ jobs:
             echo "ISSUE IDs:"
             echo "$linked_issues"
             echo "LINKED_ISSUE_IDs=$linked_issues" >> $GITHUB_ENV
+          
         - name: Update Status to "Under Review"
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
