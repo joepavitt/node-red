@@ -60,7 +60,7 @@ jobs:
             echo item_ids:            
             echo $item_ids            
             echo while loop:            
-            echo $item_ids | while read ISSUE_ITEM_ID; do
+            echo while read ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
               mutation($itemId:ID!, $projectId:ID!) {
@@ -81,4 +81,4 @@ jobs:
                 }
               }' -f itemId=$ISSUE_ITEM_ID -f projectId=$PROJECT_ID  --jq '.data.updateProjectV2ItemFieldValue.projectV2Item.updatedAt')"
               echo "updatedAt=$updatedAt"
-            done
+            done <<< "$item_ids"
