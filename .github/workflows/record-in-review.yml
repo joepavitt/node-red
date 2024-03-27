@@ -55,7 +55,8 @@ jobs:
             INTO_REVIEW_FIELD_ID: PVTF_lAHOBepif84AfH1xzgUnkt0
           run: |
             item_ids=$(echo '${{ env.LINKED_ISSUE_IDs }}' | jq '.[] | .projectItems.nodes[] | select(.project.id == "${{ env.PROJECT_ID }}") | .id')
-            echo "DATE=$(date +"%Y-%m-%d")"         
+            DATE='$(date +"%Y-%m-%d")'
+            echo "Date: $DATE"
             while read -r ISSUE_ITEM_ID; do
               echo "ISSUE_ITEM_ID=$ISSUE_ITEM_ID"
               updatedAt="$( gh api graphql -f query='
